@@ -8,6 +8,8 @@ import Dashboard from '../pages/Dashboard';
 import Journals from '../pages/Journals';
 import CreateJournal from '../pages/CreateJournal';
 import EditJournal from '../pages/EditJournal';
+import Profile from '../pages/Profile';
+import Settings from '../pages/Settings';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +54,22 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <DashboardLayout>
             <EditJournal />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Profile />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Settings />
           </DashboardLayout>
         </ProtectedRoute>
       } />

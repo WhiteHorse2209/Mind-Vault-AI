@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Search, Plus, MoreVertical, Edit2, Trash2, Calendar, Clock } from 'lucide-react';
+import { Search, Plus, MoreVertical, Edit2, Trash2, Calendar, Clock, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -99,9 +99,28 @@ const Journals = () => {
                 <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-1">
                   {journal.title}
                 </h3>
+
+                <div className="flex items-center gap-2 mb-4">
+                  {journal.mood && (
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                      {journal.mood}
+                    </span>
+                  )}
+                </div>
+
                 <p className="text-text-secondary text-sm leading-relaxed mb-6 line-clamp-4 flex-1">
                   {journal.content}
                 </p>
+
+                {journal.ai_insight && (
+                  <div className="mb-6 p-3 bg-accent/5 border border-accent/10 rounded-xl">
+                    <div className="flex items-center gap-2 text-accent mb-1">
+                      <Sparkles size={12} />
+                      <span className="text-[10px] font-bold uppercase tracking-wider">AI Insight</span>
+                    </div>
+                    <p className="text-xs text-text-secondary italic">"{journal.ai_insight}"</p>
+                  </div>
+                )}
 
                 <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-text-secondary/50">
                   <div className="flex items-center gap-1">

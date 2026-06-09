@@ -4,6 +4,7 @@ import api from '../services/api';
 import { BookOpen, Plus, Clock, TrendingUp, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const StatCard = ({ icon: Icon, label, value, color }) => (
   <div className="glass-card p-6 flex items-center gap-6">
@@ -19,6 +20,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const { settings } = useSettings();
   const [journals, setJournals] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,11 +38,44 @@ const Dashboard = () => {
     fetchJournals();
   }, []);
 
+  const calculateStreak = (entries) => {
+    if (!entries || entries.length === 0) return 0;
+    
+    // Sort entries by date (descending)
+    const sortedDates = entries
+      .map(e => new Date(e.created_at).setHours(0, 0, 0, 0))
+      .sort((a, b) => b - a);
+      
+    // Remove duplicates (multiple entries on the same day)
+    const uniqueDates = [...new Set(sortedDates)];
+    
+    let streak = 0;
+    const today = new Date().setHours(0, 0, 0, 0);
+    const yesterday = new Date(today - 86400000).setHours(0, 0, 0, 0);
+    
+    // Check if the latest entry is today or yesterday to continue the streak
+    if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) return 0;
+    
+    for (let i = 0; i < uniqueDates.length; i++) {
+      const expectedDate = uniqueDates[0] - (i * 86400000);
+      if (uniqueDates[i] === expectedDate) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  };
+
+  const streak = calculateStreak(journals);
+
   const stats = [
     { icon: BookOpen, label: 'Total Entries', value: journals.length, color: 'bg-blue-500/20 text-blue-500' },
     { icon: Clock, label: 'Last Entry', value: journals.length > 0 ? new Date(journals[0].created_at).toLocaleDateString() : 'None', color: 'bg-purple-500/20 text-purple-500' },
-    { icon: TrendingUp, label: 'Streak', value: '3 Days', color: 'bg-emerald-500/20 text-emerald-500' },
+    { icon: TrendingUp, label: 'Streak', value: `${streak} Day${streak !== 1 ? 's' : ''}`, color: 'bg-emerald-500/20 text-emerald-500' },
   ];
+
+  const latestInsight = journals.find(j => j.ai_insight)?.ai_insight;
 
   return (
     <div className="space-y-10">
@@ -90,7 +125,9 @@ const Dashboard = () => {
                     <h3 className="font-bold text-lg group-hover:text-primary transition-colors">{journal.title}</h3>
                     <span className="text-xs text-text-secondary">{new Date(journal.created_at).toLocaleDateString()}</span>
                   </div>
-                  <p className="text-text-secondary line-clamp-1">{journal.content}</p>
+                  <p className={`text-text-secondary line-clamp-1 ${settings.privacyMode ? 'blur-sm select-none' : ''}`}>
+                    {journal.content}
+                  </p>
                 </Link>
               ))
             ) : (
@@ -109,9 +146,12 @@ const Dashboard = () => {
           <h2 className="text-2xl font-bold">Insights Guide</h2>
           <div className="glass-card p-8 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
             <Sparkles className="text-primary mb-4" size={32} />
-            <h3 className="text-xl font-bold mb-3">AI Discovery</h3>
+            <h3 className="text-xl font-bold mb-3">{latestInsight ? 'Latest Insight' : 'AI Discovery'}</h3>
             <p className="text-text-secondary leading-relaxed mb-6">
-              In Week 2, this space will show emotion trends and AI-powered reflections based on your writing.
+              {latestInsight 
+                ? `"${latestInsight}"`
+                : "In Week 2, this space will show emotion trends and AI-powered reflections based on your writing."
+              }
             </p>
             <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-sm text-text-secondary italic">
               "Consistency is the key to deep self-discovery."

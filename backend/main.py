@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.database.mongodb import connect_to_mongo, close_mongo_connection
-from backend.routes import auth, journal
+from database.mongodb import connect_to_mongo, close_mongo_connection
+from routes import auth, journal
 
 app = FastAPI(title="MindVault AI API")
 

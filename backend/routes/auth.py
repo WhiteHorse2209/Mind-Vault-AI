@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime
 from bson import ObjectId
-from backend.database.mongodb import get_database
-from backend.schemas.auth import UserCreate, UserLogin, UserResponse, Token
-from backend.utils.auth import get_password_hash, verify_password, create_access_token, decode_access_token
+from database.mongodb import get_database
+from schemas.auth import UserCreate, UserLogin, UserResponse, Token
+from utils.auth import get_password_hash, verify_password, create_access_token, decode_access_token
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")

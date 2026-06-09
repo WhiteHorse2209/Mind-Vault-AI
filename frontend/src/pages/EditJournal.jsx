@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../services/api';
-import { ArrowLeft, Save, Loader2, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Trash2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const EditJournal = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [mood, setMood] = useState(null);
+  const [insight, setInsight] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ const EditJournal = () => {
         const response = await api.get(`/journal/${id}`);
         setTitle(response.data.title);
         setContent(response.data.content);
+        setMood(response.data.mood);
+        setInsight(response.data.ai_insight);
       } catch (error) {
         alert('Failed to fetch journal');
         navigate('/journals');
@@ -100,7 +104,25 @@ const EditJournal = () => {
           <span>{content.length} characters</span>
           <span>•</span>
           <span>{content.split(/\s+/).filter(Boolean).length} words</span>
+          {mood && (
+            <>
+              <span>•</span>
+              <span className="px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                {mood}
+              </span>
+            </>
+          )}
         </div>
+
+        {insight && (
+          <div className="p-4 bg-accent/5 border border-accent/10 rounded-xl">
+            <div className="flex items-center gap-2 text-accent mb-1">
+              <Sparkles size={14} />
+              <span className="text-xs font-bold uppercase tracking-wider">Current AI Insight</span>
+            </div>
+            <p className="text-sm text-text-secondary italic">"{insight}"</p>
+          </div>
+        )}
 
         <textarea 
           value={content}

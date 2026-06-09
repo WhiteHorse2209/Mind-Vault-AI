@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from bson import ObjectId
 from datetime import datetime
-from backend.database.mongodb import get_database
-from backend.schemas.journal import JournalCreate, JournalUpdate, JournalResponse
-from backend.routes.auth import get_current_user
+from database.mongodb import get_database
+from schemas.journal import JournalCreate, JournalUpdate, JournalResponse
+from routes.auth import get_current_user
+from utils.ai import analyze_journal_content
 
 router = APIRouter(prefix="/journal", tags=["Journal Entries"])
 
@@ -12,6 +13,11 @@ router = APIRouter(prefix="/journal", tags=["Journal Entries"])
 async def create_journal(journal_in: JournalCreate, current_user: dict = Depends(get_current_user)):
     db = get_database()
     journal_dict = journal_in.dict()
+    
+    # AI Analysis
+    ai_result = await analyze_journal_content(journal_dict["content"])
+    journal_dict.update(ai_result)
+    
     journal_dict["user_id"] = str(current_user["id"])
     journal_dict["created_at"] = datetime.utcnow()
     journal_dict["updated_at"] = datetime.utcnow()
@@ -54,6 +60,11 @@ async def update_journal(journal_id: str, journal_in: JournalUpdate, current_use
         raise HTTPException(status_code=400, detail="Invalid ID format")
         
     update_data = {k: v for k, v in journal_in.dict().items() if v is not None}
+    
+    if "content" in update_data:
+        ai_result = await analyze_journal_content(update_data["content"])
+        update_data.update(ai_result)
+        
     update_data["updated_at"] = datetime.utcnow()
     
     result = await db.journal_entries.find_one_and_update(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   LayoutDashboard, 
@@ -13,9 +13,10 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SidebarLink = ({ to, icon: Icon, label, active }) => (
+const SidebarLink = ({ to, icon: Icon, label, active, onClick }) => (
   <Link 
     to={to} 
+    onClick={onClick}
     className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
       active 
       ? 'bg-primary text-white shadow-lg shadow-primary/20' 
@@ -30,6 +31,7 @@ const SidebarLink = ({ to, icon: Icon, label, active }) => (
 const DashboardLayout = ({ children }) => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const menuItems = [
@@ -60,7 +62,7 @@ const DashboardLayout = ({ children }) => {
             <SidebarLink 
               key={item.to} 
               {...item} 
-              active={window.location.pathname === item.to} 
+              active={location.pathname === item.to} 
             />
           ))}
         </nav>

@@ -43,10 +43,6 @@ const Landing = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-primary mb-8 animate-glow">
-            <Sparkles size={16} />
-            Week 1 Foundation Live
-          </span>
           <h1 className="text-5xl lg:text-7xl font-bold mb-8 leading-tight">
             Your Private Space for <br />
             <span className="gradient-text">Reflection, Growth, and Insight</span>
@@ -58,9 +54,9 @@ const Landing = () => {
             <Link to="/register" className="btn-primary px-10 py-4 text-lg flex items-center gap-2">
               Start Journaling <ArrowRight size={20} />
             </Link>
-            <Link to="#features" className="btn-secondary px-10 py-4 text-lg">
+            <a href="#features" className="btn-secondary px-10 py-4 text-lg flex items-center justify-center">
               Learn More
-            </Link>
+            </a>
           </div>
         </motion.div>
 
