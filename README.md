@@ -7,9 +7,10 @@ MindVault AI is a premium, AI-powered journaling platform designed for deep self
 ## 🚀 Key Features
 
 ### 🤖 AI-Powered Insights
-- **Mood Detection:** Every entry is analyzed to detect the user's current emotional state.
+- **Emotion Analysis:** Automatically detects Joy, Sadness, Anger, Fear, Surprise, Love, and Neutrality.
+- **Sentiment Analysis:** Categorizes entries as Positive, Negative, or Neutral.
 - **Intelligent Reflections:** Provides personalized AI insights based on the content of your writing.
-- **Insight Guide:** Dynamic dashboard surfacing the latest AI-generated growth prompts.
+- **Insight Guide:** Dynamic dashboard surfacing the latest AI-generated growth prompts and emotional analytics.
 
 ### 🎨 Premium UI/UX
 - **Dynamic Themes:** Full support for **Dark** and **Light** modes.
@@ -33,12 +34,14 @@ MindVault AI is a premium, AI-powered journaling platform designed for deep self
 
 ### Backend
 - **Framework:** FastAPI (Python)
+- **AI:** Hugging Face Transformers, PyTorch
 - **Database:** MongoDB with Motor (Async driver)
 - **Security:** JWT (jose), Bcrypt hashing
 - **Environment:** Python 3.13+
 
 ### Frontend
 - **Framework:** React 19 (Vite)
+- **Visualization:** Recharts
 - **Styling:** Tailwind CSS v4, PostCSS
 - **Animations:** Framer Motion
 - **Icons:** Lucide React
