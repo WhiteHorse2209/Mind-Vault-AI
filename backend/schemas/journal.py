@@ -16,8 +16,9 @@ class JournalUpdate(BaseModel):
 class JournalResponse(JournalBase):
     id: str
     user_id: str
-    mood: Optional[str] = None
-    ai_insight: Optional[str] = None
+    emotion: Optional[str] = None
+    sentiment: Optional[str] = None
+    score: Optional[float] = None
     created_at: datetime
     updated_at: datetime
 

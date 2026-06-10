@@ -1,31 +1,31 @@
-import random
+from transformers import pipeline
+
+# Initialize pipelines globally to load models only once
+# Emotion classifier
+emotion_classifier = pipeline(
+    "text-classification",
+    model="j-hartmann/emotion-english-distilroberta-base",
+    top_k=1
+)
+
+# Sentiment analyzer
+sentiment_analyzer = pipeline(
+    "sentiment-analysis"
+)
 
 async def analyze_journal_content(content: str) -> dict:
     """
-    Simulates AI analysis of journal content.
-    In a real application, this would call an LLM API (OpenAI, Gemini, etc.)
+    Analyzes journal content for emotion and sentiment using Hugging Face transformers.
     """
-    moods = ["Positive", "Reflective", "Neutral", "Anxious", "Determined"]
-    insights = [
-        "You seem to be focusing on personal growth today.",
-        "It's great to see you expressing gratitude in your writing.",
-        "Take a moment to breathe; your writing suggests some tension.",
-        "You're making clear progress on your goals.",
-        "This entry shows a deep level of self-awareness."
-    ]
     
-    # Simple logic to make it feel a bit more real
-    if "happy" in content.lower() or "great" in content.lower():
-        mood = "Positive"
-        insight = "Your positivity is contagious! Keep capturing these good moments."
-    elif "sad" in content.lower() or "down" in content.lower():
-        mood = "Reflective"
-        insight = "It's okay to have down days. Writing about them is a great step toward feeling better."
-    else:
-        mood = random.choice(moods)
-        insight = random.choice(insights)
-        
+    # Analyze emotion
+    emotion_result = emotion_classifier(content)[0][0]
+    
+    # Analyze sentiment
+    sentiment_result = sentiment_analyzer(content)[0]
+    
     return {
-        "mood": mood,
-        "ai_insight": insight
+        "emotion": emotion_result["label"],
+        "score": round(emotion_result["score"], 2),
+        "sentiment": sentiment_result["label"].lower()
     }

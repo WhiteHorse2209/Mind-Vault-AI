@@ -5,6 +5,17 @@ import { BookOpen, Plus, Clock, TrendingUp, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+
+const COLORS = {
+  joy: '#F59E0B',
+  sadness: '#3B82F6',
+  anger: '#EF4444',
+  fear: '#8B5CF6',
+  surprise: '#10B981',
+  love: '#EC4899',
+  neutral: '#6B7280'
+};
 
 const StatCard = ({ icon: Icon, label, value, color }) => (
   <div className="glass-card p-6 flex items-center gap-6">
@@ -38,44 +49,26 @@ const Dashboard = () => {
     fetchJournals();
   }, []);
 
-  const calculateStreak = (entries) => {
-    if (!entries || entries.length === 0) return 0;
-    
-    // Sort entries by date (descending)
-    const sortedDates = entries
-      .map(e => new Date(e.created_at).setHours(0, 0, 0, 0))
-      .sort((a, b) => b - a);
-      
-    // Remove duplicates (multiple entries on the same day)
-    const uniqueDates = [...new Set(sortedDates)];
-    
-    let streak = 0;
-    const today = new Date().setHours(0, 0, 0, 0);
-    const yesterday = new Date(today - 86400000).setHours(0, 0, 0, 0);
-    
-    // Check if the latest entry is today or yesterday to continue the streak
-    if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) return 0;
-    
-    for (let i = 0; i < uniqueDates.length; i++) {
-      const expectedDate = uniqueDates[0] - (i * 86400000);
-      if (uniqueDates[i] === expectedDate) {
-        streak++;
-      } else {
-        break;
-      }
-    }
-    return streak;
+  const calculateEmotionData = (entries) => {
+    const counts = {};
+    entries.forEach(e => {
+      const emo = e.emotion?.toLowerCase() || 'neutral';
+      counts[emo] = (counts[emo] || 0) + 1;
+    });
+    return Object.keys(counts).map(key => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1),
+      value: counts[key],
+      color: COLORS[key] || COLORS.neutral
+    }));
   };
 
-  const streak = calculateStreak(journals);
+  const emotionData = calculateEmotionData(journals);
 
   const stats = [
     { icon: BookOpen, label: 'Total Entries', value: journals.length, color: 'bg-blue-500/20 text-blue-500' },
-    { icon: Clock, label: 'Last Entry', value: journals.length > 0 ? new Date(journals[0].created_at).toLocaleDateString() : 'None', color: 'bg-purple-500/20 text-purple-500' },
-    { icon: TrendingUp, label: 'Streak', value: `${streak} Day${streak !== 1 ? 's' : ''}`, color: 'bg-emerald-500/20 text-emerald-500' },
+    { icon: TrendingUp, label: 'Positive', value: journals.filter(j => j.sentiment === 'positive').length, color: 'bg-emerald-500/20 text-emerald-500' },
+    { icon: Clock, label: 'Negative', value: journals.filter(j => j.sentiment === 'negative').length, color: 'bg-red-500/20 text-red-500' },
   ];
-
-  const latestInsight = journals.find(j => j.ai_insight)?.ai_insight;
 
   return (
     <div className="space-y-10">
@@ -104,58 +97,38 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Recent Entries */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Recent Entries</h2>
-            <Link to="/journals" className="text-primary hover:underline text-sm font-medium">View all</Link>
-          </div>
-
+            <h2 className="text-2xl font-bold">Emotion Trends</h2>
+            <div className="glass-card p-6 h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={emotionData}>
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="value">
+                            {emotionData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+        
+        {/* Recent Entries - Simplified */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold">Latest Entries</h2>
           <div className="space-y-4">
             {loading ? (
-              [1, 2, 3].map(i => <div key={i} className="h-24 glass-card animate-pulse" />)
-            ) : journals.length > 0 ? (
-              journals.slice(0, 3).map((journal) => (
-                <Link 
-                  key={journal.id} 
-                  to={`/journals/edit/${journal.id}`}
-                  className="block glass-card p-6 hover:border-primary/30 transition-all group"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-bold text-lg group-hover:text-primary transition-colors">{journal.title}</h3>
-                    <span className="text-xs text-text-secondary">{new Date(journal.created_at).toLocaleDateString()}</span>
-                  </div>
-                  <p className={`text-text-secondary line-clamp-1 ${settings.privacyMode ? 'blur-sm select-none' : ''}`}>
-                    {journal.content}
-                  </p>
-                </Link>
-              ))
+              [1, 2].map(i => <div key={i} className="h-24 glass-card animate-pulse" />)
             ) : (
-              <div className="glass-card p-12 text-center">
-                <p className="text-text-secondary mb-6">You haven't created any entries yet.</p>
-                <Link to="/journals/new" className="btn-secondary inline-flex items-center gap-2">
-                  <Plus size={18} /> Create your first entry
-                </Link>
-              </div>
+              journals.slice(0, 2).map((journal) => (
+                <div key={journal.id} className="glass-card p-4">
+                  <h3 className="font-bold">{journal.title}</h3>
+                  <p className="text-sm text-text-secondary">Emotion: {journal.emotion}</p>
+                </div>
+              ))
             )}
-          </div>
-        </div>
-
-        {/* Quick Actions / Tips */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold">Insights Guide</h2>
-          <div className="glass-card p-8 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
-            <Sparkles className="text-primary mb-4" size={32} />
-            <h3 className="text-xl font-bold mb-3">{latestInsight ? 'Latest Insight' : 'AI Discovery'}</h3>
-            <p className="text-text-secondary leading-relaxed mb-6">
-              {latestInsight 
-                ? `"${latestInsight}"`
-                : "In Week 2, this space will show emotion trends and AI-powered reflections based on your writing."
-              }
-            </p>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-sm text-text-secondary italic">
-              "Consistency is the key to deep self-discovery."
-            </div>
           </div>
         </div>
       </div>
