@@ -10,6 +10,7 @@ import CreateJournal from '../pages/CreateJournal';
 import EditJournal from '../pages/EditJournal';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
+import AIInsights from '../pages/AIInsights';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 const ProtectedRoute = ({ children }) => {
@@ -38,6 +39,14 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <DashboardLayout>
             <Journals />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/ai-insights" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AIInsights />
           </DashboardLayout>
         </ProtectedRoute>
       } />

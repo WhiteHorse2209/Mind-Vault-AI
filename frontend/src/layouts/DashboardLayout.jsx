@@ -9,7 +9,8 @@ import {
   LogOut, 
   PlusCircle,
   Menu,
-  X
+  X,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -37,6 +38,7 @@ const DashboardLayout = ({ children }) => {
   const menuItems = [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/journals', icon: BookOpen, label: 'My Journals' },
+    { to: '/ai-insights', icon: Sparkles, label: 'AI Insights' },
     { to: '/profile', icon: User, label: 'Profile' },
     { to: '/settings', icon: Settings, label: 'Settings' },
   ];

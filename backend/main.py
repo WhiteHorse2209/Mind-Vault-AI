@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.mongodb import connect_to_mongo, close_mongo_connection
-from routes import auth, journal
+from routes import auth, journal, summary
 
 app = FastAPI(title="MindVault AI API")
 
@@ -25,6 +25,7 @@ async def shutdown_db_client():
 # Include routers
 app.include_router(auth.router, prefix="/api")
 app.include_router(journal.router, prefix="/api")
+app.include_router(summary.router, prefix="/api")
 
 @app.get("/")
 async def root():

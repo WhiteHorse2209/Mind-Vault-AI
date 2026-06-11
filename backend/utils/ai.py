@@ -1,4 +1,6 @@
 from transformers import pipeline
+from ai.summarizer import generate_summary
+from ai.topic_extractor import extract_topics
 
 # Initialize pipelines globally to load models only once
 # Emotion classifier
@@ -15,7 +17,7 @@ sentiment_analyzer = pipeline(
 
 async def analyze_journal_content(content: str) -> dict:
     """
-    Analyzes journal content for emotion and sentiment using Hugging Face transformers.
+    Analyzes journal content for emotion, sentiment, summary, and topics.
     """
     
     # Analyze emotion
@@ -24,8 +26,16 @@ async def analyze_journal_content(content: str) -> dict:
     # Analyze sentiment
     sentiment_result = sentiment_analyzer(content)[0]
     
+    # Generate summary
+    summary = await generate_summary(content)
+    
+    # Extract topics
+    topics = await extract_topics(content)
+    
     return {
         "emotion": emotion_result["label"],
         "score": round(emotion_result["score"], 2),
-        "sentiment": sentiment_result["label"].lower()
+        "sentiment": sentiment_result["label"].lower(),
+        "summary": summary,
+        "topics": topics
     }

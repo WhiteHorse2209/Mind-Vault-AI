@@ -60,7 +60,7 @@ const Register = () => {
                   {...register('name', { required: 'Name is required' })}
                   type="text" 
                   className="input-field pl-12" 
-                  placeholder="John Doe"
+                  placeholder="Your UserName"
                 />
               </div>
               {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name.message}</p>}

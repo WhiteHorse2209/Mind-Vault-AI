@@ -9,6 +9,9 @@ MindVault AI is a premium, AI-powered journaling platform designed for deep self
 ### 🤖 AI-Powered Insights
 - **Emotion Analysis:** Automatically detects Joy, Sadness, Anger, Fear, Surprise, Love, and Neutrality.
 - **Sentiment Analysis:** Categorizes entries as Positive, Negative, or Neutral.
+- **AI Summarization (Phase 3):** Generates entry-level, weekly, and monthly summaries using advanced NLP models (BART/T5).
+- **Topic Extraction (Phase 3):** Automatically identifies recurring themes and tags in your journal history.
+- **Productivity Insights (Phase 3):** Analyzes writing patterns to provide actionable feedback on personal and technical growth.
 - **Intelligent Reflections:** Provides personalized AI insights based on the content of your writing.
 - **Insight Guide:** Dynamic dashboard surfacing the latest AI-generated growth prompts and emotional analytics.
 

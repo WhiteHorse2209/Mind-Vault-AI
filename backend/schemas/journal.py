@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class JournalBase(BaseModel):
@@ -19,6 +19,8 @@ class JournalResponse(JournalBase):
     emotion: Optional[str] = None
     sentiment: Optional[str] = None
     score: Optional[float] = None
+    summary: Optional[str] = None
+    topics: List[str] = []
     created_at: datetime
     updated_at: datetime
 
