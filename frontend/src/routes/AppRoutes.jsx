@@ -11,6 +11,7 @@ import EditJournal from '../pages/EditJournal';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import AIInsights from '../pages/AIInsights';
+import AIReflections from '../pages/AIReflections';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 const ProtectedRoute = ({ children }) => {
@@ -47,6 +48,14 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <DashboardLayout>
             <AIInsights />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/ai-reflections" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <AIReflections />
           </DashboardLayout>
         </ProtectedRoute>
       } />

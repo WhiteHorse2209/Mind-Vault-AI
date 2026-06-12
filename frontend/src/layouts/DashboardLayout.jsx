@@ -10,7 +10,8 @@ import {
   PlusCircle,
   Menu,
   X,
-  Sparkles
+  Sparkles,
+  BrainCircuit
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -39,6 +40,7 @@ const DashboardLayout = ({ children }) => {
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/journals', icon: BookOpen, label: 'My Journals' },
     { to: '/ai-insights', icon: Sparkles, label: 'AI Insights' },
+    { to: '/ai-reflections', icon: BrainCircuit, label: 'AI Reflections' },
     { to: '/profile', icon: User, label: 'Profile' },
     { to: '/settings', icon: Settings, label: 'Settings' },
   ];

@@ -7,19 +7,18 @@ MindVault AI is a premium, AI-powered journaling platform designed for deep self
 ## 🚀 Key Features
 
 ### 🤖 AI-Powered Insights
-- **Emotion Analysis:** Automatically detects Joy, Sadness, Anger, Fear, Surprise, Love, and Neutrality.
-- **Sentiment Analysis:** Categorizes entries as Positive, Negative, or Neutral.
-- **AI Summarization (Phase 3):** Generates entry-level, weekly, and monthly summaries using advanced NLP models (BART/T5).
-- **Topic Extraction (Phase 3):** Automatically identifies recurring themes and tags in your journal history.
-- **Productivity Insights (Phase 3):** Analyzes writing patterns to provide actionable feedback on personal and technical growth.
-- **Intelligent Reflections:** Provides personalized AI insights based on the content of your writing.
-- **Insight Guide:** Dynamic dashboard surfacing the latest AI-generated growth prompts and emotional analytics.
+- **Phase 4: Personalized AI Reflection Engine:** A deep-dive analysis system that moves beyond summaries to provide thoughtful, coach-like insights.
+  - **Pattern Detection:** Identifies recurring emotional trends and behavioral habits.
+  - **Growth Analysis:** Compares historical and recent entries to quantify personal evolution.
+  - **Actionable Recommendations:** Suggests specific steps to reduce stress and maintain productivity.
+- **AI Summarization:** Generates entry-level, weekly, and monthly summaries using advanced NLP models (BART/T5).
+- **Topic Extraction:** Automatically identifies recurring themes and technical tags in your history.
+- **Emotion & Sentiment Analysis:** Detects Joy, Sadness, Anger, Fear, Surprise, Love, and Neutrality.
 
 ### 🎨 Premium UI/UX
-- **Dynamic Themes:** Full support for **Dark** and **Light** modes.
-- **Customization:** Multiple accent colors (Blue, Purple, Emerald) to personalize your vault.
-- **Glassmorphism Design:** Modern, sleek interface with blur effects and smooth Framer Motion animations.
-- **Responsive Layout:** Optimized for desktop and mobile devices.
+- **AI Reflection Dashboard:** A dedicated space for growth insights featuring glassmorphism, animated insight cards, and progress tracking.
+- **Dynamic Themes:** Full support for **Dark** and **Light** modes with customizable accent colors.
+- **Modern Transitions:** Powered by Framer Motion for a seamless, interactive SaaS experience.
 
 ### 🔒 Privacy & Security
 - **Privacy Mode:** One-click blur for sensitive journal content on the dashboard.
@@ -37,16 +36,14 @@ MindVault AI is a premium, AI-powered journaling platform designed for deep self
 
 ### Backend
 - **Framework:** FastAPI (Python)
-- **AI:** Hugging Face Transformers, PyTorch
+- **AI & NLP:** LangChain, Hugging Face Transformers, PyTorch
 - **Database:** MongoDB with Motor (Async driver)
 - **Security:** JWT (jose), Bcrypt hashing
-- **Environment:** Python 3.13+
 
 ### Frontend
 - **Framework:** React 19 (Vite)
-- **Visualization:** Recharts
-- **Styling:** Tailwind CSS v4, PostCSS
 - **Animations:** Framer Motion
+- **Styling:** Tailwind CSS v4
 - **Icons:** Lucide React
 - **State:** React Context API (Auth & Global Settings)
 
@@ -82,10 +79,9 @@ npm run dev
 ## 🔮 Future Advancements
 
 - **Voice-to-Journal:** AI-powered transcription for hands-free reflection.
-- **Emotion Trends:** Advanced data visualization of mood fluctuations over weeks and months.
-- **Encrypted Vaults:** End-to-end encryption for maximum privacy of sensitive entries.
 - **AI Chatbot:** A "Self-Reflection Assistant" that asks meaningful questions based on your history.
 - **Export & Sync:** Export entries to PDF/Markdown and sync with cloud providers (Dropbox/Google Drive).
+- **Encrypted Vaults:** End-to-end encryption for maximum privacy of sensitive entries.
 
 ---
 
